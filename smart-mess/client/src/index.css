@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "./theme/tokens.css";
+
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus ring everywhere (>= 3:1 against background). */
+*:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link: first focusable element, visible when focused. */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 8px;
+  z-index: 50;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 2px solid var(--focus);
+  color: var(--text);
+  font-weight: 700;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Top navigation buttons (>= 44 px tall). */
+.nav-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav-link[aria-current="page"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: #ffffff;
+}
+
+/* Status colors and their legible text pairings. */
+.tone-low {
+  background: var(--status-low);
+  color: #ffffff;
+}
+.tone-medium {
+  background: var(--status-medium);
+  color: #1c1c1e;
+}
+.tone-high {
+  background: var(--status-high);
+  color: #ffffff;
+}
+/* Text color per mode follows the computed 4.5:1 check (contrast.test.js):
+   the off/unsure "high" orange needs pure black text; mono "medium" gray needs
+   white text; mono "low" light gray needs dark text. */
+html[data-cvd="off"] .tone-high,
+html[data-cvd="unsure"] .tone-high {
+  color: #000000;
+}
+html[data-cvd="mono"] .tone-medium {
+  color: #ffffff;
+}
+html[data-cvd="mono"] .tone-low {
+  color: #000000;
+}
+.tone-neutral {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+/* Segment fill for the 3-segment crowd bar. */
+.seg-fill {
+  background: var(--status-fill, var(--status-low));
+}
+.seg-empty {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+html[data-cvd="mono"] .seg-empty {
+  border-width: 2px; /* mono mode: thick outlines instead of hue steps */
+}
+
+/* Reduced motion: honor both the OS preference and the in-app setting. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation: none !important;
+  transition: none !important;
+}

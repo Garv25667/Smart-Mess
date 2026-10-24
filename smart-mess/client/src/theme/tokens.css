@@ -1,0 +1,55 @@
+/* Color tokens per color-vision mode (ARCHITECTURE.md section 8 starting
+   values, checked with a contrast function; see docs/accessibility-report.md).
+   Statuses are NEVER carried by color alone: text + icon + pattern always
+   accompany the colors. Components use only these variables, never raw hex. */
+
+:root,
+html[data-cvd="off"],
+html[data-cvd="unsure"] {
+  --status-low: #0072b2;
+  --status-medium: #e69f00;
+  --status-high: #d55e00;
+  --status-stale: #8a6d3b;
+  --accent: #0072b2;
+  --bg: #f8f8f7;
+  --surface: #ffffff;
+  --surface-muted: #efeeec;
+  --border: #55565a;
+  --text: #1c1c1e;
+  --text-muted: #55565a;
+  --focus: #1a53a0;
+  --ok: #1a6b3c;
+  --danger: #a30000;
+}
+
+html[data-cvd="protan"],
+html[data-cvd="deutan"] {
+  --status-low: #0072b2;
+  --status-medium: #d9b310;
+  --status-high: #3b1f5c;
+  --status-stale: #6e4f00;
+  --accent: #0072b2;
+  --focus: #4b0f8a;
+}
+
+html[data-cvd="tritan"] {
+  --status-low: #2e7d32;
+  --status-medium: #ffb300;
+  --status-high: #b71c1c;
+  --status-stale: #6d4c1e;
+  --accent: #2e7d32;
+  --focus: #5a1d7a;
+}
+
+html[data-cvd="mono"] {
+  --status-low: #b3b3b3;
+  --status-medium: #6f6f6f;
+  --status-high: #1a1a1a;
+  --status-stale: #4d4d4d;
+  --accent: #1a1a1a;
+  --focus: #1a1a1a;
+}
+
+/* Text drawn on a status color: black or white by computed contrast.
+   (Colors above were chosen dark enough for white text, except --status-medium
+   in off/unsure/protan/deutan/tritan modes where black text passes 4.5:1.) */

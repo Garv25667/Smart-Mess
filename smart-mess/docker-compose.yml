@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: smartmess
+      POSTGRES_PASSWORD: smartmess
+      POSTGRES_DB: smartmess
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartmess"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build: ./server
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgres://smartmess:smartmess@db:5432/smartmess?sslmode=disable"
+      JWT_SECRET: "replace_with_secure_secret"
+      OTP_SECRET: "replace_with_secure_secret"
+      ALLOWED_EMAIL_DOMAIN: "iiitp.ac.in"
+      APP_ENV: "development"
+    ports:
+      - "8080:8080"
+
+  client:
+    build:
+      context: ./client
+      args:
+        VITE_API_URL: "http://localhost:8080/api"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+volumes:
+  db_data:

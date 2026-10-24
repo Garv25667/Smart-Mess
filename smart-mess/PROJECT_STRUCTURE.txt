@@ -1,0 +1,46 @@
+smart-mess/
+├─ docker-compose.yml
+├─ README.md
+├─ server/
+│  ├─ go.mod
+│  ├─ go.sum
+│  ├─ cmd/
+│  │   └─ api/
+│  │        └─ main.go
+│  ├─ internal/
+│  │   ├─ config/
+│  │   │   └─ config.go
+│  │   ├─ auth/
+│  │   │   └─ auth.go
+│  │   ├─ mail/
+│  │   │   └─ mail.go
+│  │   ├─ rules/
+│  │   │   └─ rules.go
+│  │   ├─ store/
+│  │   │   └─ store.go
+│  │   └─ httpapi/
+│  │        └─ router.go
+│  ├─ db/
+│  │   ├─ migrations/
+│  │   │   └─ 001_init.sql
+│  │   └─ queries/
+│  │        └─ queries.sql
+│  └─ seed/
+│       ├─ managers.example.json
+│       └─ main.go
+└─ client/
+   ├─ package.json
+   ├─ vite.config.js
+   ├─ tailwind.config.js
+   ├─ index.html
+   └─ src/
+        ├─ main.jsx
+        ├─ App.jsx
+        ├─ api/
+        │   └─ api.js
+        ├─ auth/
+        │   └─ AuthContext.jsx
+        ├─ theme/
+        │   └─ tokens.css
+        └─ components/
+            └─ Placeholder.jsx

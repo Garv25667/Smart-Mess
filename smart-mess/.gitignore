@@ -1,0 +1,13 @@
+# Secrets / owner-provided data - never commit
+server/seed/managers.json
+
+# Dependencies
+node_modules/
+dist/
+
+# Local env
+.env
+*.local
+
+# Go
+*.test

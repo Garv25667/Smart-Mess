@@ -1,0 +1,11 @@
+{
+  "mainManagers": [
+    { "email": "", "hostelGroup": "girls" },
+    { "email": "", "hostelGroup": "boys" }
+  ],
+  "messManagers": [
+    { "email": "", "messCodes": [] },
+    { "email": "", "messCodes": [] },
+    { "email": "", "messCodes": [] }
+  ]
+}
