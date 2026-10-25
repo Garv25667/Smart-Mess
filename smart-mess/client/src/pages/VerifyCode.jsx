@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { verifyOTP, requestOTP, ApiError } from "../api";
 import { useAuth } from "../auth/AuthContext.jsx";
+import { PlateIcon } from "../components/icons.jsx";
 
 export default function VerifyCode() {
   const navigate = useNavigate();
@@ -72,22 +73,29 @@ export default function VerifyCode() {
   }
 
   return (
-    <section aria-labelledby="verify-h" className="mx-auto max-w-xl space-y-3">
-      <h1 id="verify-h" className="text-2xl font-bold">
-        Enter the code
-      </h1>
-      {!email ? (
+    <section aria-labelledby="verify-h" className="auth-screen mx-auto max-w-xl space-y-3">
+      <div className="auth-card verify-card">
+        <div className="auth-brand" aria-label="Smart Mess">
+          <span className="auth-brand-icon"><PlateIcon /></span>
+          <strong>Smart Mess</strong>
+          <span>Good food. A better campus.</span>
+        </div>
+        <h1 id="verify-h" className="text-2xl font-bold">Verify your email</h1>
+        <p className="auth-intro">Enter the 6-digit code sent to your email.</p>
+        {!email ? (
         <p>
           No email in this session.{" "}
           <Link to="/login" className="underline">
             Back to sign in
           </Link>
         </p>
-      ) : (
-        <form onSubmit={onSubmit} className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
+        ) : (
+          <>
+        <form onSubmit={onSubmit} className="auth-form rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
           <label htmlFor="code" className="block font-bold">
             6-digit code sent to {email}
           </label>
+          <p className="auth-code-hint">The code is valid for 10 minutes. If it has not arrived, request a new one below.</p>
           <input
             id="code"
             inputMode="numeric"
@@ -96,7 +104,7 @@ export default function VerifyCode() {
             onChange={(e) => setCode(e.target.value)}
             aria-describedby={error ? errorId : undefined}
             aria-invalid={error ? "true" : "false"}
-            className="mt-1 min-h-[44px] w-40 rounded border-2 border-[var(--border)] bg-[var(--bg)] p-2 tracking-[0.3em]"
+            className="otp-input mt-1 min-h-[48px] w-full rounded border-2 border-[var(--border)] bg-[var(--bg)] p-2 tracking-[0.3em]"
           />
           <p id={errorId} role="alert" tabIndex={-1} className="outline-none">
             {error ? (
@@ -108,11 +116,11 @@ export default function VerifyCode() {
           <button
             type="submit"
             disabled={busy}
-            className="mt-3 min-h-[48px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-lg font-bold disabled:opacity-60"
+            className="primary-action mt-3 min-h-[48px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-lg font-bold disabled:opacity-60"
           >
-            {busy ? "Verifying…" : "Verify"}
+            {busy ? "Verifying…" : "Verify and continue"}
           </button>
-          <p className="mt-2">
+          <p className="mt-2 resend-row">
             <button type="button" onClick={resend} disabled={busy || !email} className="underline disabled:opacity-60">
               Send a new code
             </button>
@@ -123,7 +131,10 @@ export default function VerifyCode() {
             </p>
           )}
         </form>
-      )}
+        <Link to="/login" className="auth-back-link">← Back to sign in</Link>
+          </>
+        )}
+      </div>
     </section>
   );
 }

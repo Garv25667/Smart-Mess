@@ -49,6 +49,7 @@ export function RatingSummary({ meal }) {
 
 // Rating input: 5 radios, each label has the star icon and a visible number.
 export function StarInput({ value, onChange }) {
+  const descriptions = ["Terrible", "Poor", "Okay", "Good", "Excellent"];
   return (
     <fieldset className="mt-3">
       <legend className="font-bold">Your rating</legend>
@@ -64,6 +65,7 @@ export function StarInput({ value, onChange }) {
               type="radio"
               name="stars"
               value={n}
+              aria-label={String(n)}
               checked={value === n}
               onChange={() => onChange(n)}
               className="absolute h-px w-px opacity-0"
@@ -72,6 +74,7 @@ export function StarInput({ value, onChange }) {
               <StarIcon filled={value >= n} />
               <span className="text-xs font-bold">{n}</span>
             </span>
+            <span className="rating-caption">{descriptions[n - 1]}</span>
           </label>
         ))}
       </div>

@@ -33,7 +33,12 @@ export default function ChooseGroup() {
   }
 
   return (
-    <section aria-labelledby="choose-group-h" className="mx-auto max-w-xl">
+    <section aria-labelledby="choose-group-h" className="mx-auto max-w-xl choose-group-screen">
+      <ol className="flow-progress" aria-label="Sign in progress">
+        <li className="complete"><span>1</span>Sign in</li>
+        <li className="complete"><span>2</span>Verify</li>
+        <li className="current" aria-current="step"><span>3</span>Choose group</li>
+      </ol>
       <h1 id="choose-group-h" className="text-2xl font-bold">
         Which hostel group are you in?
       </h1>
@@ -46,7 +51,7 @@ export default function ChooseGroup() {
           type="button"
           onClick={() => setPicked("girls")}
           aria-pressed={picked === "girls"}
-          className={`flex min-h-[88px] items-center justify-center gap-3 rounded-lg border-2 px-4 text-xl font-bold ${
+          className={`hostel-choice flex min-h-[88px] items-center justify-center gap-3 rounded-lg border-2 px-4 text-xl font-bold ${
             picked === "girls"
               ? "border-[var(--accent)] bg-[var(--surface-muted)]"
               : "border-[var(--border)] bg-[var(--surface)]"
@@ -59,7 +64,7 @@ export default function ChooseGroup() {
           type="button"
           onClick={() => setPicked("boys")}
           aria-pressed={picked === "boys"}
-          className={`flex min-h-[88px] items-center justify-center gap-3 rounded-lg border-2 px-4 text-xl font-bold ${
+          className={`hostel-choice flex min-h-[88px] items-center justify-center gap-3 rounded-lg border-2 px-4 text-xl font-bold ${
             picked === "boys"
               ? "border-[var(--accent)] bg-[var(--surface-muted)]"
               : "border-[var(--border)] bg-[var(--surface)]"
@@ -92,10 +97,10 @@ export default function ChooseGroup() {
             <button
               type="submit"
               disabled={busy}
-              className="min-h-[44px] rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 font-bold disabled:opacity-60"
+              className="primary-action min-h-[44px] rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 font-bold disabled:opacity-60"
             >
               <CheckIcon />
-              <span className="ml-1">Confirm {picked === "girls" ? "Girls" : "Boys"}</span>
+              <span className="ml-1">Continue</span>
             </button>
           </form>
         </div>

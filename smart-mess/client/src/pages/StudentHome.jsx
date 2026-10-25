@@ -43,8 +43,8 @@ export default function StudentHome() {
   const selectedMeal = resolveSelected(meals, mealType, setMealType);
 
   return (
-    <section aria-labelledby="home-h" className="space-y-6">
-      <div>
+    <section aria-labelledby="home-h" className="space-y-6 dashboard-screen">
+      <div className="dashboard-heading">
         <h1 id="home-h" className="text-2xl font-bold">
           Today's menu and crowd
         </h1>
@@ -67,7 +67,7 @@ export default function StudentHome() {
             Could not load crowd levels. Retrying in a few seconds.
           </p>
         ) : (
-          <ul className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3 crowd-card-list">
             {messes.map((m) => (
               <li key={m.code ?? m.id}>
                 <CrowdCard mess={m} />
@@ -101,7 +101,7 @@ export default function StudentHome() {
             )}
           </div>
         ) : (
-          <p className="mt-2 text-[var(--text-muted)]">No published menu for today yet.</p>
+          <p className="empty-menu-state mt-2 text-[var(--text-muted)]">No published menu for today yet.</p>
         )}
       </section>
     </section>
@@ -168,7 +168,7 @@ function MealSection({ meal, meals, mealType, setMealType, dietPref }) {
       <div className="flex flex-wrap items-center gap-3">
         <Link
           to={`/review?meal=${meal.mealType}`}
-          className={`min-h-[44px] rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 py-2 font-bold ${
+          className={`primary-action min-h-[44px] rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 py-2 font-bold ${
             openForReview ? "" : "pointer-events-none opacity-60"
           }`}
           aria-disabled={!openForReview}

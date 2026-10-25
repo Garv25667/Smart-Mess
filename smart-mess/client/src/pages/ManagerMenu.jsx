@@ -153,7 +153,7 @@ export default function ManagerMenu() {
       )}
 
       {mealsQuery.data && (
-        <div id="menu-editor-panel" role="tabpanel" aria-label={`${mealType} editor`} className="space-y-3">
+        <div id="menu-editor-panel" role="tabpanel" aria-label={`${mealType} editor`} className="space-y-3 menu-editor-panel">
           <MealTabs
             meals={MEALS_BY_ORDER.map((t) => ({ mealType: t, scheduleLabel: "" }))}
             selected={mealType}
@@ -237,7 +237,7 @@ export default function ManagerMenu() {
               type="button"
               disabled={busy}
               onClick={() => onSave(true)}
-              className="min-h-[48px] flex-1 rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 font-bold disabled:opacity-60"
+              className="primary-action min-h-[48px] flex-1 rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 font-bold disabled:opacity-60"
             >
               <CheckIcon /> <span className="ml-1">{busy ? "Saving…" : "Save and Publish"}</span>
             </button>

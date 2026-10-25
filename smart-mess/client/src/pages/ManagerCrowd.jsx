@@ -145,7 +145,7 @@ export default function ManagerCrowd() {
         type="button"
         disabled={!selected || busy}
         onClick={onSave}
-        className="min-h-[56px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-xl font-bold disabled:opacity-60"
+        className="primary-action min-h-[56px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-xl font-bold disabled:opacity-60"
       >
         <CheckIcon /> <span className="ml-1">{busy ? "Saving…" : "Save"}</span>
       </button>

@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestOTP, ApiError } from "../api";
+import { PlateIcon } from "../components/icons.jsx";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -41,20 +42,24 @@ export default function Login() {
   }
 
   return (
-    <section aria-labelledby="login-h" className="mx-auto max-w-xl space-y-3">
-      <h1 id="login-h" className="text-2xl font-bold">
-        Sign in
-      </h1>
-      <p className="text-sm text-[var(--text-muted)]">
-        Use your IIIT Pune college email. We send a 6-digit one-time code, valid
-        for 10 minutes.
-      </p>
+    <section aria-labelledby="login-h" className="auth-screen mx-auto max-w-xl space-y-3">
+      <div className="auth-card">
+        <div className="auth-brand" aria-label="Smart Mess">
+          <span className="auth-brand-icon"><PlateIcon /></span>
+          <strong>Smart Mess</strong>
+          <span>Good food. A better campus.</span>
+        </div>
+        <h1 id="login-h" className="text-2xl font-bold">Sign in</h1>
+        <p className="text-sm text-[var(--text-muted)]">
+          Use your IIIT Pune college email. We send a 6-digit one-time code, valid
+          for 10 minutes.
+        </p>
       {sent && (
         <p role="status" className="rounded-md border-2 border-[var(--accent)] p-3 font-bold">
           Code sent. Check your inbox.
         </p>
       )}
-      <form onSubmit={onSubmit} className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
+      <form onSubmit={onSubmit} className="auth-form rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
         <label htmlFor="email" className="block font-bold">
           College email
         </label>
@@ -62,11 +67,12 @@ export default function Login() {
           id="email"
           type="email"
           autoComplete="email"
+          placeholder="your.name@iiitp.ac.in"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-describedby={error ? errorId : undefined}
           aria-invalid={error ? "true" : "false"}
-          className="mt-1 min-h-[44px] w-full rounded border-2 border-[var(--border)] bg-[var(--bg)] p-2"
+          className="auth-input mt-1 min-h-[44px] w-full rounded border-2 border-[var(--border)] bg-[var(--bg)] p-2"
         />
         <p id={errorId} role="alert" tabIndex={-1} className="outline-none">
           {error ? (
@@ -78,11 +84,13 @@ export default function Login() {
         <button
           type="submit"
           disabled={busy}
-          className="mt-3 min-h-[48px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-lg font-bold disabled:opacity-60"
+          className="primary-action mt-3 min-h-[48px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 text-lg font-bold disabled:opacity-60"
         >
           {busy ? "Sending…" : "Send code"}
         </button>
       </form>
+        <p className="auth-reassurance">Your college email is used to authenticate your Smart Mess account.</p>
+      </div>
     </section>
   );
 }

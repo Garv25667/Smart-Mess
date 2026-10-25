@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate, NavLink } from "react-router-dom";
+import { Routes, Route, Navigate, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import SkipLink from "./components/SkipLink.jsx";
+import { PlateIcon } from "./components/icons.jsx";
 import Login from "./pages/Login.jsx";
 import VerifyCode from "./pages/VerifyCode.jsx";
 import ChooseGroup from "./pages/ChooseGroup.jsx";
@@ -26,11 +27,13 @@ export default function App() {
   const cvdMode = user?.cvdMode || "off";
   const reducedMotion = Boolean(user?.reducedMotion);
   const textScale = user?.textScale || 1.0;
+  const theme = user?.theme || "system";
   useEffect(() => {
     document.documentElement.setAttribute("data-cvd", cvdMode);
+    document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.setAttribute("data-motion", reducedMotion ? "reduced" : "auto");
     document.documentElement.style.fontSize = `${(textScale * 100).toFixed(0)}%`;
-  }, [cvdMode, reducedMotion, textScale]);
+  }, [cvdMode, reducedMotion, textScale, theme]);
 
   return (
     <>
@@ -79,10 +82,14 @@ function ManagerRoleEntry() {
 
 function TopNav() {
   const { user, logout } = useAuth();
+  const { pathname } = useLocation();
   const role = user?.role || "guest";
+  if (pathname === "/login" || pathname === "/verify") return null;
   return (
-    <nav aria-label="Main" className="border-b-2 border-[var(--border)] bg-[var(--surface-muted)]">
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-3 py-1 text-sm">
+    <nav aria-label="Main" className="app-nav border-b-2 border-[var(--border)] bg-[var(--surface-muted)]">
+      <div className="app-nav-inner mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-3 py-1 text-sm">
+        <span className="brand-mark" aria-hidden="true"><PlateIcon /></span>
+        <span className="brand-name">Smart Mess</span>
         {role === "main_manager" ? (
           <>
             <NavLink to="/manager/menu" className="nav-link">Menu editor</NavLink>

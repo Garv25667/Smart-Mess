@@ -16,18 +16,28 @@ const CVD_OPTIONS = [
   { id: "mono", label: "No color vision (achromatopsia)" },
 ];
 
+const THEME_OPTIONS = [
+  { id: "light", label: "Light" },
+  { id: "dark", label: "Dark" },
+  { id: "system", label: "System" },
+  { id: "high_contrast", label: "High contrast" },
+];
+
 export default function Settings() {
   const { user, refresh } = useAuth();
   const [error, setError] = useState(null);
+  const [saved, setSaved] = useState(false);
   const queryClient = useQueryClient();
   const pref = user || {};
 
   async function save(patch) {
     setError(null);
+    setSaved(false);
     try {
       await updatePreferences(patch);
       await refresh();
       queryClient.invalidateQueries(); // screens re-render with the new prefs
+      setSaved(true);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Could not save the setting. Try again.");
     }
@@ -43,18 +53,38 @@ export default function Settings() {
   }
 
   return (
-    <section aria-labelledby="settings-h" className="mx-auto max-w-xl space-y-6">
+    <section aria-labelledby="settings-h" className="mx-auto max-w-xl space-y-4 settings-screen">
       <h1 id="settings-h" className="text-2xl font-bold">
         Settings
       </h1>
+      <p className="settings-intro">Customize the appearance and accessibility options.</p>
 
-      <fieldset className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
+      <fieldset className="settings-group rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
+        <legend className="px-1 font-bold">Appearance</legend>
+        <p className="text-sm text-[var(--text-muted)]">Choose how Smart Mess looks.</p>
+        <div className="theme-options">
+          {THEME_OPTIONS.map((option) => (
+            <label key={option.id} className="theme-option">
+              <input
+                type="radio"
+                name="theme"
+                value={option.id}
+                checked={(pref.theme || "system") === option.id}
+                onChange={() => save({ theme: option.id })}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="settings-group rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
         <legend className="px-1 font-bold">Do you have trouble telling colors apart?</legend>
         <p className="text-sm text-[var(--text-muted)]">
           Color vision mode changes colors only. Text, icons and patterns are
           identical in every mode.
         </p>
-        <div className="mt-2 space-y-1">
+        <div className="mt-2 space-y-1 cvd-option-list">
           {CVD_OPTIONS.map((o) => (
             <label key={o.id} className="flex min-h-[44px] items-center gap-2">
               <input
@@ -81,7 +111,7 @@ export default function Settings() {
         </p>
       </fieldset>
 
-      <fieldset className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
+      <fieldset className="settings-group rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
         <legend className="px-1 font-bold">Text size</legend>
         <label htmlFor="text-scale" className="block">
           <span className="font-bold">Text scale: {Number(pref.textScale || 1).toFixed(2)}×</span>
@@ -102,7 +132,7 @@ export default function Settings() {
         </p>
       </fieldset>
 
-      <fieldset className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
+      <fieldset className="settings-group rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
         <legend className="px-1 font-bold">Motion</legend>
         <label className="flex min-h-[44px] items-center gap-2">
           <input
@@ -118,7 +148,7 @@ export default function Settings() {
         </p>
       </fieldset>
 
-      <fieldset className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
+      <fieldset className="settings-group rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-3">
         <legend className="px-1 font-bold">Menu preference</legend>
         <div className="flex gap-2">
           {["regular", "jain"].map((id) => (
@@ -145,6 +175,17 @@ export default function Settings() {
         </p>
       </fieldset>
 
+      <div className="settings-actions">
+        <p className="settings-autosave">Changes are saved automatically.</p>
+        <button
+          type="button"
+          className="settings-reset"
+          onClick={() => save({ dietPref: "regular", cvdMode: "off", textScale: 1, theme: "system", reducedMotion: false })}
+        >
+          Reset to defaults
+        </button>
+      </div>
+
       <p role="alert" tabIndex={-1} className="outline-none">
         {error ? (
           <span className="flex items-center gap-2 font-bold text-[var(--danger)]">
@@ -152,6 +193,7 @@ export default function Settings() {
           </span>
         ) : null}
       </p>
+      {saved && <p role="status" className="settings-saved">Settings saved.</p>}
     </section>
   );
 }

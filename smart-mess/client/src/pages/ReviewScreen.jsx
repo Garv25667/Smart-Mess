@@ -44,10 +44,15 @@ export default function ReviewScreen() {
   const meal = meals.find((m) => m.mealType === chosenType) || meals[0];
 
   return (
-    <section aria-labelledby="review-h" className="mx-auto max-w-xl space-y-3">
+    <section aria-labelledby="review-h" className="mx-auto max-w-xl space-y-3 review-screen">
       <h1 id="review-h" className="text-2xl font-bold">
         Review a meal
       </h1>
+      <ol className="flow-progress review-progress" aria-label="Review steps">
+        <li className="current" aria-current="step"><span>1</span>Meal</li>
+        <li><span>2</span>Rating</li>
+        <li><span>3</span>Submit</li>
+      </ol>
       {mealsQuery.isLoading ? (
         <p role="status" className="font-bold">
           Loading the menu…
@@ -58,7 +63,11 @@ export default function ReviewScreen() {
         </p>
       ) : (
         <>
-          <fieldset>
+          <div className="review-details" aria-label="Review details">
+            <div><span>Hostel group</span><strong>{user?.hostelGroup === "girls" ? "Girls' hostel" : user?.hostelGroup === "boys" ? "Boys' hostel" : "Not set"}</strong></div>
+            <div><span>Date</span><strong>{mealsQuery.data?.date || "Date unavailable"}</strong></div>
+          </div>
+          <fieldset className="meal-picker">
             <legend className="font-bold">Which meal?</legend>
             {meals.map((m) => (
               <label key={m.mealType} className="flex min-h-[44px] items-center gap-2">
@@ -143,7 +152,7 @@ function ReviewForm({ meal, dietPref, onSubmitted }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
+    <form onSubmit={onSubmit} className="review-form rounded-md border-2 border-[var(--border)] bg-[var(--surface)] p-4" noValidate>
       <p className="font-bold">Rate the {cap(meal.mealType)} you ate</p>
       <fieldset className="mt-2">
         <legend className="font-bold">Which version did you eat?</legend>
@@ -206,13 +215,16 @@ function ReviewForm({ meal, dietPref, onSubmitted }) {
         ) : null}
       </p>
 
-      <button
-        type="submit"
-        disabled={busy || commentLen > 500}
-        className="mt-2 min-h-[48px] w-full rounded border-2 border-[var(--accent)] bg-[var(--surface-muted)] px-4 py-2 text-lg font-bold disabled:opacity-60"
-      >
-        {busy ? "Submitting…" : "Submit review"}
-      </button>
+      <div className="review-actions">
+        <Link to="/" className="review-cancel">← Cancel</Link>
+        <button
+          type="submit"
+          disabled={busy || commentLen > 500}
+          className="primary-action min-h-[48px] rounded border-2 border-[var(--accent)] px-4 py-2 text-lg font-bold disabled:opacity-60"
+        >
+          {busy ? "Submitting…" : "Submit review"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -269,11 +281,7 @@ export function ReviewPanel({ meal, dietPref }) {
           <legend>Form disabled ({meal.reviewState.replace("_", " ")})</legend>
         </fieldset>
       )}
-      <p className="text-sm text-[var(--text-muted)]">
-        <Link to="/" className="underline">
-          Back to home
-        </Link>
-      </p>
+      {meal.reviewState !== "open" && <p className="text-sm text-[var(--text-muted)]"><Link to="/" className="underline">Back to home</Link></p>}
     </div>
   );
 }
